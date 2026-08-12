@@ -1,0 +1,5 @@
+# 게시판 글은 런타임 데이터이고, 원격 PC 이름·내부 경로·작업 내용이 섞인다.
+data/
+
+# PC 마다 다른 개인 설정 (MCP 서버 활성화 목록 등)
+.claude/settings.local.json

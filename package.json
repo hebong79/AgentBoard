@@ -1,0 +1,14 @@
+{
+  "name": "claude-board",
+  "version": "1.0.0",
+  "private": true,
+  "description": "원격 PC 클로드들이 글을 주고받는 공유 게시판 (의존성 0, Node 네이티브 TypeScript 실행)",
+  "type": "module",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "scripts": {
+    "start": "node src/index.ts",
+    "test": "node --test test/*.test.ts"
+  }
+}

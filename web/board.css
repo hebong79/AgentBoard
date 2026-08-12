@@ -1,0 +1,512 @@
+:root {
+  --bg: #10131a;
+  --panel: #181d27;
+  --panel-2: #1f2632;
+  --line: #2b3444;
+  --text: #e6eaf2;
+  --muted: #8f9bb2;
+  --accent: #6aa9ff;
+  --danger: #ff7b72;
+  --ok: #5ddba4;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 15px/1.6 system-ui, "Noto Sans KR", "Malgun Gothic", sans-serif;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--line);
+  background: var(--panel);
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+
+.topbar h1 {
+  margin: 0;
+  font-size: 17px;
+  letter-spacing: -0.01em;
+}
+
+.status {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.status.ok {
+  color: var(--ok);
+}
+
+.status.bad {
+  color: var(--danger);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  gap: 16px;
+  padding: 16px 20px 40px;
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+@media (max-width: 820px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 14px;
+  margin-bottom: 16px;
+}
+
+.card h2 {
+  margin: 0 0 10px;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
+.topics {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.topics li button {
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  color: var(--text);
+  padding: 7px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font: inherit;
+}
+
+.topics li button:hover {
+  background: var(--panel-2);
+}
+
+.topics li button[aria-current="true"] {
+  background: var(--panel-2);
+  color: var(--accent);
+}
+
+.topics .count {
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.field {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.field span {
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+
+input,
+textarea {
+  width: 100%;
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: var(--text);
+  padding: 8px 10px;
+  font: inherit;
+}
+
+textarea {
+  resize: vertical;
+}
+
+input:focus,
+textarea:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: -1px;
+}
+
+button {
+  background: var(--accent);
+  color: #08111f;
+  border: 0;
+  border-radius: 6px;
+  padding: 8px 14px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:hover {
+  filter: brightness(1.08);
+}
+
+.row {
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+}
+
+.row .field {
+  flex: 1;
+}
+
+.actions {
+  align-items: center;
+}
+
+.hint {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.posts {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.post {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 14px;
+}
+
+.post.reply {
+  margin-left: 28px;
+  border-left: 3px solid var(--accent);
+}
+
+.post h3 {
+  margin: 0 0 6px;
+  font-size: 16px;
+}
+
+.meta {
+  font-size: 12px;
+  color: var(--muted);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.body {
+  word-break: break-word;
+  margin: 0 0 10px;
+}
+
+/* ── 마크다운 본문 ─────────────────────────────────────────────
+   본문은 .md 로 들어온다. 카드 제목이 h3 이므로 본문 제목은 h3~h6 로 그리되
+   글자 크기는 여기서 다시 눌러 카드 제목을 넘지 않게 한다. */
+
+.body-wrap {
+  position: relative;
+}
+
+/* 긴 보고서 한 건이 목록 전체를 덮지 않게 접어 둔다. 「펼치기」로 연다. */
+.body-wrap.clipped {
+  max-height: 420px;
+  overflow: hidden;
+  mask-image: linear-gradient(to bottom, #000 78%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, #000 78%, transparent 100%);
+}
+
+.markdown > *:first-child {
+  margin-top: 0;
+}
+
+.markdown > *:last-child {
+  margin-bottom: 0;
+}
+
+.markdown p {
+  margin: 0 0 10px;
+}
+
+.markdown h3,
+.markdown h4,
+.markdown h5,
+.markdown h6 {
+  margin: 18px 0 8px;
+  line-height: 1.35;
+  color: #f2f6ff;
+}
+
+.markdown h3 {
+  font-size: 16px;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 5px;
+}
+
+.markdown h4 {
+  font-size: 15px;
+}
+
+.markdown h5,
+.markdown h6 {
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.markdown ul,
+.markdown ol {
+  margin: 0 0 10px;
+  padding-left: 22px;
+}
+
+.markdown li {
+  margin: 3px 0;
+}
+
+.markdown code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, "D2Coding", monospace;
+  font-size: 13px;
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  padding: 1px 5px;
+  color: #cfe0ff;
+}
+
+.markdown pre {
+  background: #0d1117;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px 12px;
+  overflow-x: auto;
+  margin: 0 0 10px;
+}
+
+.markdown pre code {
+  background: none;
+  border: 0;
+  padding: 0;
+  color: #d6e2f5;
+  font-size: 12.5px;
+  line-height: 1.55;
+}
+
+/* 코드 블록에 언어가 적혀 있으면 오른쪽 위에 표시한다 */
+.markdown pre {
+  position: relative;
+}
+
+.markdown pre code[data-lang]::before {
+  content: attr(data-lang);
+  position: absolute;
+  top: 6px;
+  right: 10px;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.markdown blockquote {
+  margin: 0 0 10px;
+  padding: 2px 0 2px 12px;
+  border-left: 3px solid var(--accent);
+  color: #cfe0ff;
+}
+
+.markdown blockquote > *:last-child {
+  margin-bottom: 0;
+}
+
+.markdown hr {
+  border: 0;
+  border-top: 1px solid var(--line);
+  margin: 14px 0;
+}
+
+.markdown a {
+  color: var(--accent);
+}
+
+.markdown img {
+  max-width: 100%;
+  border-radius: 6px;
+}
+
+/* 넓은 표가 카드를 밀어내지 않게 상자 안에서만 가로로 흐른다 */
+.markdown .table-wrap {
+  overflow-x: auto;
+  margin: 0 0 10px;
+}
+
+.markdown table {
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+
+.markdown th,
+.markdown td {
+  border: 1px solid var(--line);
+  padding: 5px 10px;
+  text-align: left;
+}
+
+.markdown th {
+  background: var(--panel-2);
+  color: #dce6f7;
+}
+
+/* 「원문(md)」 버튼으로 보는 마크다운 소스 */
+.body.raw {
+  white-space: pre-wrap;
+  font-family: ui-monospace, SFMono-Regular, Menlo, "D2Coding", monospace;
+  font-size: 12.5px;
+  line-height: 1.6;
+  background: #0d1117;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 12px;
+  overflow-x: auto;
+  color: #c6d3e6;
+}
+
+.post .tools button.raw-toggle[aria-pressed="true"] {
+  color: var(--accent);
+}
+
+.preview {
+  background: var(--panel-2);
+  margin-bottom: 10px;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.tag {
+  font-size: 12px;
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 2px 9px;
+  color: var(--muted);
+}
+
+.post .tools {
+  display: flex;
+  gap: 8px;
+}
+
+.post .tools button {
+  background: var(--panel-2);
+  color: var(--text);
+  font-size: 13px;
+  padding: 5px 10px;
+}
+
+.post .tools button.delete:hover {
+  color: var(--danger);
+}
+
+.task-fields {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px 12px 2px;
+  margin: 0 0 10px;
+}
+
+.task-fields legend {
+  font-size: 12px;
+  color: var(--muted);
+  padding: 0 6px;
+}
+
+select {
+  width: 100%;
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: var(--text);
+  padding: 8px 10px;
+  font: inherit;
+}
+
+.badge {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 5px;
+  padding: 2px 8px;
+  vertical-align: middle;
+  border: 1px solid transparent;
+}
+
+.status-todo {
+  background: #2b3444;
+  color: #b9c4d6;
+}
+
+.status-doing {
+  background: #16324f;
+  color: #7cc0ff;
+  border-color: #2b5f92;
+}
+
+.status-done {
+  background: #143528;
+  color: #6fdcae;
+  border-color: #245c44;
+}
+
+.status-blocked {
+  background: #43201f;
+  color: #ff9a92;
+  border-color: #7a3733;
+}
+
+.tag.file {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: #9fb4d4;
+}
+
+.next {
+  margin: 0 0 10px;
+  font-size: 14px;
+  color: #cfe0ff;
+  border-left: 3px solid var(--accent);
+  padding-left: 10px;
+}
+
+.post .tools button.move {
+  font-size: 12px;
+}
+
+.empty {
+  color: var(--muted);
+  padding: 24px;
+  text-align: center;
+}
